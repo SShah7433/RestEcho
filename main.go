@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,14 @@ var (
 	colorCyan   = "\033[36m"
 	colorWhite  = "\033[37m"
 )
+
+func getEnv(key, fallback string) string {
+	value, exists := os.LookupEnv(key)
+	if !exists {
+		value = fallback
+	}
+	return value
+}
 
 func printDivider() {
 	print(colorBlue)
@@ -56,6 +65,9 @@ func main() {
 		// Reply with 200 (always)
 		c.Status(http.StatusOK)
 	})
-	println(colorPurple, "Starting Server...you should assume the server is up", colorReset)
-	r.Run() // listen and serve on 0.0.0.0:8080
+
+	portNumber := getEnv("PORT", "8080")
+	fmt.Printf("%vListening on port %s (Use PORT environment variable to change)\n%v", colorPurple, portNumber, colorReset)
+	
+	r.Run()
 }
