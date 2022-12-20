@@ -54,7 +54,17 @@ func main() {
 			fmt.Printf("%s: %s\n", param, value[0])
 		}
 
-		println(colorReset)
+		fmt.Printf("%v--- URL PARAMETERS END ---\n", colorReset)
+
+		fmt.Println("--- REQUEST HEADERS ---", colorCyan)
+		for key, values := range c.Request.Header {
+			fmt.Printf("%s: ", key)
+			for _, v := range values {
+				fmt.Printf("%s", v)
+			}
+			fmt.Println()
+		}
+		fmt.Printf("%v--- REQUEST HEADERS END ---\n", colorReset)
 
 		// Print Request Body (does not get pretty formatted on purpose)
 		data, _ := ioutil.ReadAll(c.Request.Body)
